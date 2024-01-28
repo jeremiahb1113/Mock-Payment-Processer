@@ -1,8 +1,7 @@
-package models;
+package launcher.models;
 
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 
 @Entity
@@ -16,14 +15,16 @@ public class CreditCard {
     card must be active and enabled in order to be used
      */
     @Id
-    Long card_number;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    Integer card_number;
     Integer ccv;
     boolean active;
     boolean enabled;
     double funds = 0.00;
+    @Transient
     Card_type card_type;
 
-    public CreditCard(Long card_number, Integer ccv, boolean active, boolean enabled, double funds, Card_type card_type){
+    public CreditCard(Integer card_number, Integer ccv, boolean active, boolean enabled, double funds, Card_type card_type){
         this.card_number = card_number;
         this.ccv = ccv;
         this.active = active;
@@ -33,11 +34,11 @@ public class CreditCard {
     }
     public CreditCard(){}
 
-    public Long getCard_number() {
+    public Integer getCard_number() {
         return card_number;
     }
 
-    public void setCard_number(Long card_number) {
+    public void setCard_number(Integer card_number) {
         this.card_number = card_number;
     }
 

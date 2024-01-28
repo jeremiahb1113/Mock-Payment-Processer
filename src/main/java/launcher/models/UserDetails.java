@@ -1,14 +1,19 @@
-package models;
+package launcher.models;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import lombok.Data;
 
+import javax.persistence.*;
+
+@Data
 @Entity
 public class UserDetails {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     Long user_id;
     String firstname;
     String lastname;
+    //marked as Transient because Spring cannot determine the type
+    @Transient
     CreditCard card;
 
     public UserDetails(){}
