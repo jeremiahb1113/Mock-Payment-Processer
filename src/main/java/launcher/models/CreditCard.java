@@ -1,10 +1,13 @@
 package launcher.models;
 
 
+
+
 import javax.persistence.*;
 
 
 @Entity
+@Table(name = "card")
 public class CreditCard {
     public enum Card_type {
         VISA, AMEX, MASTER_CARD
@@ -16,23 +19,48 @@ public class CreditCard {
      */
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
+    Integer id;
     Integer card_number;
     Integer ccv;
     boolean active;
     boolean enabled;
     double funds = 0.00;
-    @Transient
+    @OneToOne(mappedBy = "card")
+    UserDetails userDetails;
     Card_type card_type;
 
-    public CreditCard(Integer card_number, Integer ccv, boolean active, boolean enabled, double funds, Card_type card_type){
+    public CreditCard(Integer id, Integer card_number, Integer ccv, boolean active, boolean enabled, double funds, Card_type card_type, UserDetails userDetails){
+        this.id = id;
         this.card_number = card_number;
         this.ccv = ccv;
         this.active = active;
         this.enabled = enabled;
         this.funds = funds;
         this.card_type = card_type;
+        this.userDetails = userDetails;
     }
     public CreditCard(){}
+
+    public UserDetails getUserDetails() {
+        return userDetails;
+    }
+
+    public void setUserDetails(UserDetails userDetails) {
+        this.userDetails = userDetails;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public void setFunds(double funds) {
+        this.funds = funds;
+    }
 
     public Integer getCard_number() {
         return card_number;

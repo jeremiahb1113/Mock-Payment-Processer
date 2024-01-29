@@ -6,14 +6,20 @@ import javax.persistence.*;
 
 @Data
 @Entity
+@Table(name = "users")
 public class UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
     Long user_id;
     String firstname;
     String lastname;
-    //marked as Transient because Spring cannot determine the type
-    @Transient
+     //Long card_ID;
+    //creditcard is another class mapped as a One to One
+    //relationship in SQL we need it to be labeled
+    //otherwise it will not be able to determine the type
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "card_ID", referencedColumnName = "id")
     CreditCard card;
 
     public UserDetails(){}
@@ -25,7 +31,10 @@ public class UserDetails {
         this.lastname = lastname;
         this.card = card;
 
+
     }
+
+
 
     public Long getUser_id() {
         return user_id;

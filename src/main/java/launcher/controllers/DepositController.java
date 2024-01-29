@@ -26,6 +26,12 @@ public class DepositController {
         card.setFunds(7.00);
         user.setCard(card);
         response.add(user);
+        /*
+        *Credit card is null at first but when the data
+        * is retrieved from the database it sets the results
+        * into the credit card ready for the user to view the info
+        * it uses the parameters such as firstname, lastname and id
+        * to request for the information*/
         return response;
     }
 
