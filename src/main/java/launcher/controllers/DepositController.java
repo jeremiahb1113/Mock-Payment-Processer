@@ -52,9 +52,5 @@ public class DepositController {
 
     }
 
-    @GetMapping("/hello")
-    public String helloWorld(){
-        return "Ello Worlda";
-    }
 
 }
