@@ -1,17 +1,13 @@
 package launcher.services;
 
-import launcher.dto.UserDTO;
-import launcher.models.UserDetails;
+import launcher.models.User;
 import launcher.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
+
 
 @Service
 public class UserService  {
@@ -20,18 +16,19 @@ public class UserService  {
     UserRepository userRepository;
 
 
-    public UserDetails createUser(UserDetails userDetails) {
+    public User createUser(User userDetails) {
         return userRepository.save(userDetails);
     }
 
-    public UserDetails getUser(Long id) {
+
+    public User getUser(Long id) {
 
        return userRepository.selectUser(id);
     }
 
 
-    public List<UserDetails> getAll() {
-         List<UserDetails> users = userRepository.findAll();
+    public List<User> getAll() {
+         List<User> users = userRepository.findAll();
          return users;
     }
 

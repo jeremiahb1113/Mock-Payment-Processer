@@ -1,18 +1,13 @@
 package launcher.dto;
 
-import launcher.models.CreditCard;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import launcher.models.User;
+import lombok.*;
 
+@Data
 @Setter
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserDTO {
-    Long id;
-    String firstname;
-    String lastname;
-    CreditCard card;
+   private User userDetails;
 }

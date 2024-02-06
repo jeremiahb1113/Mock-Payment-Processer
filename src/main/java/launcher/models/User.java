@@ -3,38 +3,40 @@ package launcher.models;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.*;
 
 @Data
 @Entity
 @Table(name = "users")
-public class UserDetails {
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
-    Long user_id;
-    String firstname;
-    String lastname;
-     //Long card_ID;
-    //creditcard is another class mapped as a One to One
-    //relationship in SQL we need it to be labeled
-    //otherwise it will not be able to determine the type
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "card_ID", referencedColumnName = "id")
-    CreditCard card;
+    private Long user_id;
+    private String firstname;
+    private String lastname;
 
-    public UserDetails(){}
+    @OneToMany(cascade = CascadeType.ALL)
+    List<CreditCard> cards = new ArrayList<>();
 
-    public UserDetails(Long user_id, String firstname, String lastname
-    , CreditCard card){
+    public User(){}
+
+    public User(Long user_id, String firstname, String lastname
+    , List<CreditCard> cards){
         this.user_id = user_id;
         this.firstname = firstname;
         this.lastname = lastname;
-        this.card = card;
+        this.cards = cards;
 
 
     }
 
+    public List<CreditCard> getCards() {
+        return cards;
+    }
 
+    public void setCards(List<CreditCard> cards) {
+        this.cards = cards;
+    }
 
     public Long getUser_id() {
         return user_id;
@@ -60,11 +62,4 @@ public class UserDetails {
         this.lastname = lastname;
     }
 
-    public CreditCard getCard() {
-        return card;
-    }
-
-    public void setCard(CreditCard card) {
-        this.card = card;
-    }
 }

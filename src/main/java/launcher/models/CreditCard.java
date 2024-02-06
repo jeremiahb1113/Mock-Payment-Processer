@@ -3,34 +3,34 @@ package launcher.models;
 
 
 
+import lombok.Data;
+
 import javax.persistence.*;
 
-
+@Data
 @Entity
-@Table(name = "card")
+@Table(name = "cards")
 public class CreditCard {
-    public enum Card_type {
-        VISA, AMEX, MASTER_CARD
-    }
-
-    /*card number should be encrypted in database
-    card number should have XXXX-XXXX-XXXX-XXXX-XXXX format
-    card must be active and enabled in order to be used
-     */
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
-    Integer id;
-    Integer card_number;
+    Long id;
+    Long card_number;
     Integer ccv;
     boolean active;
     boolean enabled;
     double funds = 0.00;
-    @OneToOne(mappedBy = "card")
-    UserDetails userDetails;
-    Card_type card_type;
+    String card_type;
+    Long user_identification;
+    //@ManyToOne subject can only have 1 teacher, but teacher can have man subjects
+    //this is subject, it can have only one User
+    //@JoinColumn(name = "id",referencedColumnName = "user_id")
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
+    private User user_owner;
 
-    public CreditCard(Integer id, Integer card_number, Integer ccv, boolean active, boolean enabled, double funds, Card_type card_type, UserDetails userDetails){
+
+
+
+    public CreditCard(Long user_identification,Long id, Long card_number, Integer ccv, boolean active, boolean enabled, double funds, String card_type){
         this.id = id;
         this.card_number = card_number;
         this.ccv = ccv;
@@ -38,23 +38,32 @@ public class CreditCard {
         this.enabled = enabled;
         this.funds = funds;
         this.card_type = card_type;
-        this.userDetails = userDetails;
+        this.user_identification = user_identification;
+
     }
     public CreditCard(){}
 
-    public UserDetails getUserDetails() {
-        return userDetails;
+    public Long getUser_identification() {
+        return user_identification;
     }
 
-    public void setUserDetails(UserDetails userDetails) {
-        this.userDetails = userDetails;
+    public void setUser_identification(Long user_identification) {
+        this.user_identification = user_identification;
     }
 
-    public Integer getId() {
+    public User getUser_owner() {
+        return user_owner;
+    }
+
+    public void setUser_owner(User user_owner) {
+        this.user_owner = user_owner;
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -62,11 +71,11 @@ public class CreditCard {
         this.funds = funds;
     }
 
-    public Integer getCard_number() {
+    public Long getCard_number() {
         return card_number;
     }
 
-    public void setCard_number(Integer card_number) {
+    public void setCard_number(Long card_number) {
         this.card_number = card_number;
     }
 
@@ -102,11 +111,11 @@ public class CreditCard {
         this.funds = funds;
     }
 
-    public Card_type getCard_type() {
+    public String getCard_type() {
         return card_type;
     }
 
-    public void setCard_type(Card_type card_type) {
+    public void setCard_type(String card_type) {
         this.card_type = card_type;
     }
 }
