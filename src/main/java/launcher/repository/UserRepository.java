@@ -20,6 +20,11 @@ public interface UserRepository extends JpaRepository<User,Long> {
     @Query(value = "UPDATE users SET firstname = ?1, lastname = ?2 WHERE user_id = ?3",nativeQuery = true)
     void modify(String first, String last, Long id);
 
+    @Transactional
+    @Modifying
+    @Query(value = "DELETE FROM cards WHERE user_id = ?",nativeQuery = true)
+    void removeAllCards(Long id);
+
 
 
 }

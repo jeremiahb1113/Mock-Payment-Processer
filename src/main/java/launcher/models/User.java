@@ -1,5 +1,6 @@
 package launcher.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -15,7 +16,9 @@ public class User {
     private String firstname;
     private String lastname;
 
-    @OneToMany(cascade = CascadeType.ALL)
+
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     List<CreditCard> cards = new ArrayList<>();
 
     public User(){}

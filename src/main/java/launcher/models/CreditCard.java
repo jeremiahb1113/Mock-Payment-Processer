@@ -3,6 +3,7 @@ package launcher.models;
 
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -12,6 +13,7 @@ import javax.persistence.*;
 @Table(name = "cards")
 public class CreditCard {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
     Long card_number;
     Integer ccv;
@@ -23,6 +25,7 @@ public class CreditCard {
     //@ManyToOne subject can only have 1 teacher, but teacher can have man subjects
     //this is subject, it can have only one User
     //@JoinColumn(name = "id",referencedColumnName = "user_id")
+
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private User user_owner;

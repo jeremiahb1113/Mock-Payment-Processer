@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.transaction.Transactional;
 
@@ -34,7 +35,43 @@ public interface CreditRepository extends JpaRepository<CreditCard,Long> {
     //add card to User
     @Transactional
     @Modifying
-    @Query(value = "INSERT INTO cards (id,card_number,ccv,active,enabled,funds,card_type,user_id) VALUES (?1,?2,?3,?4,?5,?6,?7,?8)", nativeQuery = true)
-    void appendCard(Long id,Long card_number,Integer ccv, boolean active,
+    @Query(value = "INSERT INTO cards (card_number,ccv,active,enabled,funds,card_type,user_id) VALUES (?1,?2,?3,?4,?5,?6,?7)", nativeQuery = true)
+    void appendCard(Long card_number,Integer ccv, boolean active,
                     boolean enabled, double funds, String card_type, Long user_id);
+
+    @Transactional
+    @Modifying
+    @Query(value = "INSERT INTO users (card_number,ccv,active,enabled,funds,card_type,user_id) VALUES (?1,?2,?3,?4,?5,?6,?7)", nativeQuery = true)
+    void appendUser(Long card_number,Integer ccv, boolean active,
+                    boolean enabled, double funds, String card_type, Long user_id);
+
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE cards SET active = true WHERE cards.user_id = ?",nativeQuery = true)
+    void activateCard(Long id);
+
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE cards SET active = false WHERE cards.user_id = ?",nativeQuery = true)
+    void deactivateCard(Long id);
+
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE cards SET enabled = true WHERE cards.user_id = ?",nativeQuery = true)
+    void enableCard(Long id);
+
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE cards SET enabled = false WHERE cards.user_id = ?", nativeQuery = true)
+    void disableCard(Long id);
+
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE cards SET funds = funds + ?1 WHERE cards.user_id = ?2", nativeQuery = true)
+    void add( Double funds,Long id);
+
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE cards SET funds = funds - ?1 WHERE cards.user_id = ?2",nativeQuery = true)
+    void subtract(Double funds,Long id);
 }

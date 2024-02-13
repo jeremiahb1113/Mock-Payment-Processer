@@ -39,4 +39,8 @@ public class UserService  {
     public void ModifyUser(String first, String last,Long id) {
          userRepository.modify(first, last,id);
     }
+
+    public void deleteAllCards(Long id) {
+        userRepository.removeAllCards(id);
+    }
 }
