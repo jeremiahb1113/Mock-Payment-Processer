@@ -5,16 +5,20 @@ package launcher.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import java.util.UUID;
 
 @Data
 @Entity
 @Table(name = "cards")
 public class CreditCard {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    //@GeneratedValue(generator = "system-uuid")
+    //@GenericGenerator(name = "system-uuid", strategy = "uuid")
+    String id = UUID.randomUUID().toString();
     Long card_number;
     Integer ccv;
     boolean active;
@@ -33,7 +37,7 @@ public class CreditCard {
 
 
 
-    public CreditCard(Long user_identification,Long id, Long card_number, Integer ccv, boolean active, boolean enabled, double funds, String card_type){
+    public CreditCard(Long user_identification,String id, Long card_number, Integer ccv, boolean active, boolean enabled, double funds, String card_type){
         this.id = id;
         this.card_number = card_number;
         this.ccv = ccv;
@@ -62,11 +66,11 @@ public class CreditCard {
         this.user_owner = user_owner;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

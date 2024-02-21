@@ -43,4 +43,8 @@ public class UserService  {
     public void deleteAllCards(Long id) {
         userRepository.removeAllCards(id);
     }
+
+    public boolean doesUserExist(Long id){
+         return userRepository.existsById(id);
+    }
 }

@@ -6,6 +6,7 @@ import launcher.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -31,25 +32,47 @@ public class UserController {
 
     }
 
+
+
     @GetMapping("/{user_id}")
-    public User singleUser(@PathVariable("user_id") Long id){
-
-       return userService.getUser(id);
+    public ResponseEntity<User> singleUser(@PathVariable("user_id") Long id){
+       ResponseEntity<User> user = new ResponseEntity<User>(userService.getUser(id),HttpStatus.OK);
+       if(user.getBody() == null) {
+           return new ResponseEntity<User>(userService.getUser(id),HttpStatus.NOT_FOUND);
+       }
+       return user;
     }
-    //delete user
+
     @DeleteMapping("/{user_id}")
-    public String deleteUser(@PathVariable("user_id") Long id){
-       userService.deleteAllCards(id);
-       userService.deleteUser(id);
-       return "User has been deleted successfully";
+    public ResponseEntity<String> deleteUser(@PathVariable("user_id") Long id){
+
+
+
+       if(userService.doesUserExist(id)){
+           userService.deleteAllCards(id);
+           userService.deleteUser(id);
+           return new ResponseEntity<String>("User with id: " + id + " has been successfully removed",HttpStatus.OK);
+       }
+       else if(!userService.doesUserExist(id)){
+           return new ResponseEntity<String>("User does not exist",HttpStatus.NOT_FOUND);
+       }
+
+       return new ResponseEntity<String>("An error occurred",HttpStatus.INTERNAL_SERVER_ERROR);
     }
-    //update user details
+
     @PutMapping(value = "/{user_id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void updateUser(@PathVariable("user_id") Long id, @RequestBody User userDetails){
-       userService.ModifyUser(userDetails.getFirstname(), userDetails.getLastname(),id);
+    public ResponseEntity<String> updateUser(@PathVariable("user_id") Long id, @RequestBody User userDetails){
 
+            if(userService.doesUserExist(id)){
+               userService.ModifyUser(userDetails.getFirstname(), userDetails.getLastname(),id);
+               return new ResponseEntity<String>("User has successfully been modified",HttpStatus.OK);
+                }
+        else if (!userService.doesUserExist(id)){
+           //User does not exist, return a 404
+                return new ResponseEntity<String>("User does not exist",HttpStatus.NOT_FOUND);
+        }
+        else return new ResponseEntity<String>("An error occurred, please try again",HttpStatus.INTERNAL_SERVER_ERROR);
+        }
 
-    }
-    //
 
 }
